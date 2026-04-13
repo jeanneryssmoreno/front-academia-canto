@@ -138,7 +138,7 @@ export default function Landing() {
                         <Typography
                             variant="h1"
                             sx={{
-                                fontSize: { xs: '2.2rem', sm: '3.5rem', md: '4.8rem' },
+                                fontSize: { xs: '1.8rem', sm: '3rem', md: '4rem' },
                                 lineHeight: 1.05,
                                 color: 'white',
                                 mb: 0.5,
@@ -151,7 +151,7 @@ export default function Landing() {
                         <Typography
                             variant="h1"
                             sx={{
-                                fontSize: { xs: '2.6rem', sm: '4rem', md: '5.5rem' },
+                                fontSize: { xs: '2.2rem', sm: '3.5rem', md: '4.8rem' },
                                 lineHeight: 1.05,
                                 background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 35%, #06b6d4 75%, #22d3ee 100%)',
                                 WebkitBackgroundClip: 'text',
