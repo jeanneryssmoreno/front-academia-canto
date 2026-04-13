@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import MenuBookIcon from '@mui/icons-material/MenuBook'
 import { useCourses, useCreateCourse, useUpdateCourse, useDeleteCourse } from '../../hooks/useCourses'
+import { useSnackbar } from '../../context/SnackbarContext'
 import type { Course } from '../../types/database'
 
 const levelColors: Record<string, { bg: string; color: string }> = {
@@ -24,6 +25,7 @@ export default function AdminCourses() {
     const createCourse = useCreateCourse()
     const updateCourse = useUpdateCourse()
     const deleteCourse = useDeleteCourse()
+    const { showSnackbar } = useSnackbar()
 
     const [open, setOpen] = useState(false)
     const [editing, setEditing] = useState<Course | null>(null)
@@ -44,18 +46,28 @@ export default function AdminCourses() {
 
     const handleSubmit = async () => {
         if (!form.name.trim()) return
-        if (editing) {
-            await updateCourse.mutateAsync({ id: editing.id, name: form.name, description: form.description || null, level: form.level || null })
-        } else {
-            await createCourse.mutateAsync({ name: form.name, description: form.description || null, level: form.level || null })
+        try {
+            if (editing) {
+                await updateCourse.mutateAsync({ id: editing.id, name: form.name, description: form.description || null, level: form.level || null })
+                showSnackbar('Curso actualizado')
+            } else {
+                await createCourse.mutateAsync({ name: form.name, description: form.description || null, level: form.level || null })
+                showSnackbar('Curso creado exitosamente')
+            }
+            setOpen(false)
+        } catch {
+            showSnackbar('Error al guardar el curso', 'error')
         }
-        setOpen(false)
     }
 
     const handleDelete = async () => {
-        if (deleteId) {
+        if (!deleteId) return
+        try {
             await deleteCourse.mutateAsync(deleteId)
+            showSnackbar('Curso eliminado')
             setDeleteId(null)
+        } catch {
+            showSnackbar('Error al eliminar el curso', 'error')
         }
     }
 
@@ -84,8 +96,8 @@ export default function AdminCourses() {
                             <Typography variant="body2">No hay cursos registrados.</Typography>
                         </Box>
                     ) : (
-                        <TableContainer>
-                            <Table>
+                        <TableContainer sx={{ overflowX: 'auto' }}>
+                            <Table sx={{ minWidth: 500 }}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Nombre</TableCell>

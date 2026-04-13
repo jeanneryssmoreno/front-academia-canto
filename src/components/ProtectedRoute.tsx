@@ -7,20 +7,29 @@ interface Props {
     roles?: string[]
 }
 
+const Spinner = (
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <CircularProgress color="primary" />
+    </Box>
+)
+
+function hasSupabaseSession(): boolean {
+    return Object.keys(localStorage).some(k => k.startsWith('sb-') && k.endsWith('-auth-token'))
+}
+
 export default function ProtectedRoute({ children, roles }: Props) {
     const { user, profile, loading } = useAuth()
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-                <CircularProgress color="primary" />
-            </Box>
-        )
+    if (loading) return Spinner
+
+    if (!user) {
+        if (hasSupabaseSession()) return Spinner
+        return <Navigate to="/login" replace />
     }
 
-    if (!user) return <Navigate to="/login" replace />
+    if (!profile) return Spinner
 
-    if (roles && profile && !roles.includes(profile.role)) {
+    if (roles && !roles.includes(profile.role)) {
         if (profile.role === 'teacher') return <Navigate to="/teacher/dashboard" replace />
         if (profile.role === 'admin') return <Navigate to="/admin/dashboard" replace />
         return <Navigate to="/student/dashboard" replace />

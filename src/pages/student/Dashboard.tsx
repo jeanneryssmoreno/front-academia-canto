@@ -22,7 +22,7 @@ function StatCard({
 }) {
     return (
         <Card>
-            <CardContent sx={{ p: 3 }}>
+            <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                     <Box
                         sx={{
@@ -81,17 +81,17 @@ export default function StudentDashboard() {
     return (
         <Box>
             {/* Header */}
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>
                     Bienvenido, {profile?.full_name?.split(' ')[0]} 👋
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Aquí tienes un resumen de tu actividad en la academia.
                 </Typography>
             </Box>
 
             {/* Stats */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, md: 4 } }}>
                 <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <StatCard
                         icon={<ClassIcon />}

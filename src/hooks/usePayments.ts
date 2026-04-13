@@ -61,6 +61,9 @@ export function useCreatePayment() {
             if (error) throw error
             return data
         },
-        onSuccess: () => qc.invalidateQueries({ queryKey: ['all-payments'] }),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ['all-payments'] })
+            qc.invalidateQueries({ queryKey: ['payments'] })
+        },
     })
 }

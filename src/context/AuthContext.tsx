@@ -11,6 +11,8 @@ interface AuthContextType {
     signIn: (email: string, password: string) => Promise<{ error: string | null }>
     signUp: (email: string, password: string, fullName: string, role?: string) => Promise<{ error: string | null; needsConfirmation: boolean }>
     signOut: () => Promise<void>
+    resetPassword: (email: string) => Promise<{ error: string | null }>
+    refreshProfile: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -30,18 +32,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            setUser(session?.user ?? null)
-            if (session?.user) fetchProfile(session.user.id)
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
+            if (session?.user) {
+                setUser(session.user)
+                await fetchProfile(session.user.id)
+            }
             setLoading(false)
         })
 
         const {
             data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null)
-            if (session?.user) fetchProfile(session.user.id)
-            else setProfile(null)
+        } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                setUser(null)
+                setProfile(null)
+            } else if (session?.user) {
+                setUser(session.user)
+                fetchProfile(session.user.id)
+            }
         })
 
         return () => subscription.unsubscribe()
@@ -78,8 +86,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await supabase.auth.signOut()
     }
 
+    const resetPassword = async (email: string) => {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/login`,
+        })
+        return { error: error?.message ?? null }
+    }
+
+    const refreshProfile = async () => {
+        const currentUser = user ?? (await supabase.auth.getUser()).data.user
+        if (currentUser) await fetchProfile(currentUser.id)
+    }
+
     return (
-        <AuthContext.Provider value={{ user, profile, loading, signIn, signUp, signOut }}>
+        <AuthContext.Provider value={{ user, profile, loading, signIn, signUp, signOut, resetPassword, refreshProfile }}>
             {children}
         </AuthContext.Provider>
     )

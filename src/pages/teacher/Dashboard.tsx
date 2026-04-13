@@ -27,17 +27,17 @@ export default function TeacherDashboard() {
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>
                     Dashboard del Profesor
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Bienvenido, {profile?.full_name}. Aquí tienes un resumen de tus clases.
                 </Typography>
             </Box>
 
             {/* Stats */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, md: 4 } }}>
                 {[
                     { label: 'Total de clases', value: classes?.length ?? 0, color: '#8b5cf6', icon: <ClassIcon /> },
                     { label: 'Próximas', value: upcomingClasses.length, color: '#06b6d4', icon: <EventIcon /> },
@@ -46,7 +46,7 @@ export default function TeacherDashboard() {
                 ].map((s) => (
                     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={s.label}>
                         <Card>
-                            <CardContent sx={{ p: 3 }}>
+                            <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                                 <Box
                                     sx={{
                                         width: 44,

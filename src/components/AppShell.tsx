@@ -23,6 +23,8 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
+import ExploreIcon from '@mui/icons-material/Explore'
+import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../context/AuthContext'
 
 const DRAWER_WIDTH = 240
@@ -31,12 +33,15 @@ const navItems = {
     student: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/student/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/student/classes' },
+        { label: 'Explorar', icon: <ExploreIcon />, path: '/student/catalog' },
         { label: 'Mis Pagos', icon: <PaymentIcon />, path: '/student/payments' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/student/profile' },
     ],
     teacher: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/teacher/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/teacher/classes' },
         { label: 'Mis Alumnos', icon: <PeopleIcon />, path: '/teacher/students' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/teacher/profile' },
     ],
     admin: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
@@ -44,6 +49,7 @@ const navItems = {
         { label: 'Clases', icon: <ClassIcon />, path: '/admin/classes' },
         { label: 'Usuarios', icon: <PeopleIcon />, path: '/admin/users' },
         { label: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/admin/profile' },
     ],
 }
 
@@ -236,8 +242,8 @@ export default function AppShell({ children }: Props) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 2, md: 4 },
-                    pt: { xs: 10, md: 4 },
+                    p: { xs: 1.5, sm: 2, md: 4 },
+                    pt: { xs: 9, md: 4 },
                     minHeight: '100vh',
                     background: '#06060f',
                     overflow: 'auto',

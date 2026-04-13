@@ -74,9 +74,9 @@ export default function Register() {
                 },
             }}
         >
-            <Container maxWidth="xs" sx={{ position: 'relative', zIndex: 1 }}>
+            <Container maxWidth="xs" sx={{ position: 'relative', zIndex: 1, px: { xs: 2, sm: 3 } }}>
                 {/* Logo */}
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                <Box sx={{ textAlign: 'center', mb: { xs: 3, sm: 4 } }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
                         <GraphicEqIcon sx={{ color: 'primary.main', fontSize: 32 }} />
                         <Typography
@@ -97,7 +97,7 @@ export default function Register() {
                 </Box>
 
                 <Card>
-                    <CardContent sx={{ p: 4 }}>
+                    <CardContent sx={{ p: { xs: 2.5, sm: 4 } }}>
                         <Typography variant="h5" fontWeight={700} sx={{ mb: 0.5 }}>
                             Crear cuenta
                         </Typography>
@@ -150,7 +150,7 @@ export default function Register() {
                             </ToggleButtonGroup>
                         </Box>
 
-                        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                             <TextField
                                 label="Nombre completo"
                                 fullWidth
@@ -193,7 +193,7 @@ export default function Register() {
                             >
                                 {loading ? <CircularProgress size={22} color="inherit" /> : 'Crear cuenta gratis'}
                             </Button>
-                        </Box>
+                        </form>
 
                         <Typography variant="body2" sx={{ textAlign: 'center', mt: 3, color: 'text.secondary' }}>
                             ¿Ya tienes cuenta?{' '}

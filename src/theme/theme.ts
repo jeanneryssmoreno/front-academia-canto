@@ -26,19 +26,33 @@ export const theme = createTheme({
         warning: { main: '#f59e0b' },
     },
     typography: {
-        fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-        h1: { fontWeight: 800, letterSpacing: '-0.02em' },
-        h2: { fontWeight: 700, letterSpacing: '-0.01em' },
-        h3: { fontWeight: 700 },
-        h4: { fontWeight: 600 },
+        fontFamily: '"Outfit", "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
+        h1: {
+            fontFamily: '"Syne", "Outfit", "Segoe UI", sans-serif',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+            textTransform: 'uppercase' as const,
+        },
+        h2: {
+            fontFamily: '"Syne", "Outfit", "Segoe UI", sans-serif',
+            fontWeight: 700,
+            letterSpacing: '-0.02em',
+        },
+        h3: { fontFamily: '"Syne", "Outfit", "Segoe UI", sans-serif', fontWeight: 700 },
+        h4: { fontWeight: 700 },
         h5: { fontWeight: 600 },
         h6: { fontWeight: 600 },
+        button: { fontWeight: 700, letterSpacing: '0.02em' },
     },
     shape: { borderRadius: 12 },
     components: {
         MuiCssBaseline: {
             styleOverrides: {
+                html: {
+                    overflowX: 'hidden',
+                },
                 body: {
+                    overflowX: 'hidden',
                     scrollbarWidth: 'thin',
                     scrollbarColor: '#8b5cf6 #06060f',
                     '&::-webkit-scrollbar': { width: '8px' },

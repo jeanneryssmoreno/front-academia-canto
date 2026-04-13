@@ -29,20 +29,20 @@ export default function StudentPayments() {
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>
                     Mis Pagos
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Historial completo de pagos y saldos pendientes.
                 </Typography>
             </Box>
 
             {/* Summary cards */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, md: 4 } }}>
                 <Grid size={{ xs: 12, sm: 4 }}>
                     <Card>
-                        <CardContent sx={{ p: 3 }}>
+                        <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
                                 <PaymentIcon sx={{ color: '#8b5cf6' }} />
                                 <Typography variant="body2" color="text.secondary">Total cobrado</Typography>
@@ -55,7 +55,7 @@ export default function StudentPayments() {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
                     <Card>
-                        <CardContent sx={{ p: 3 }}>
+                        <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
                                 <CheckCircleIcon sx={{ color: '#10b981' }} />
                                 <Typography variant="body2" color="text.secondary">Pagado</Typography>
@@ -68,7 +68,7 @@ export default function StudentPayments() {
                 </Grid>
                 <Grid size={{ xs: 12, sm: 4 }}>
                     <Card>
-                        <CardContent sx={{ p: 3 }}>
+                        <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
                                 <WarningIcon sx={{ color: '#f59e0b' }} />
                                 <Typography variant="body2" color="text.secondary">Pendiente</Typography>
@@ -97,8 +97,8 @@ export default function StudentPayments() {
                             <Typography variant="body2">No hay registros de pagos.</Typography>
                         </Box>
                     ) : (
-                        <TableContainer>
-                            <Table>
+                        <TableContainer sx={{ overflowX: 'auto' }}>
+                            <Table sx={{ minWidth: 600 }}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Monto</TableCell>

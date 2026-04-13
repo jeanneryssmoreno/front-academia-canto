@@ -41,9 +41,9 @@ export default function TeacherStudents() {
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>Mis Alumnos</Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>Mis Alumnos</Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Estudiantes inscritos en tus clases.
                 </Typography>
             </Box>
@@ -69,8 +69,8 @@ export default function TeacherStudents() {
                             <Typography variant="body2">No tienes alumnos aún.</Typography>
                         </Box>
                     ) : (
-                        <TableContainer>
-                            <Table>
+                        <TableContainer sx={{ overflowX: 'auto' }}>
+                            <Table sx={{ minWidth: 500 }}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Alumno</TableCell>
