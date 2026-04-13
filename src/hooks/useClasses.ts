@@ -67,6 +67,39 @@ export function useUpdateClassStatus() {
             const { error } = await supabase.from('classes').update({ status }).eq('id', id)
             if (error) throw error
         },
-        onSuccess: () => qc.invalidateQueries({ queryKey: ['classes'] }),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ['classes'] })
+            qc.invalidateQueries({ queryKey: ['teacher-classes'] })
+        },
+    })
+}
+
+export function useUpdateClass() {
+    const qc = useQueryClient()
+    return useMutation({
+        mutationFn: async ({ id, ...fields }: Partial<Class> & { id: string }) => {
+            const { error } = await supabase.from('classes').update(fields).eq('id', id)
+            if (error) throw error
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ['classes'] })
+            qc.invalidateQueries({ queryKey: ['teacher-classes'] })
+        },
+    })
+}
+
+export function useDeleteClass() {
+    const qc = useQueryClient()
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const { error } = await supabase.from('classes').delete().eq('id', id)
+            if (error) throw error
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ['classes'] })
+            qc.invalidateQueries({ queryKey: ['teacher-classes'] })
+            qc.invalidateQueries({ queryKey: ['student-classes'] })
+            qc.invalidateQueries({ queryKey: ['available-classes'] })
+        },
     })
 }

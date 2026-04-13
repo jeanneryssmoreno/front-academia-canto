@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
     Box,
     Drawer,
@@ -23,6 +23,8 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
+import ExploreIcon from '@mui/icons-material/Explore'
+import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../context/AuthContext'
 
 const DRAWER_WIDTH = 240
@@ -32,11 +34,13 @@ const navItems = {
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/student/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/student/classes' },
         { label: 'Mis Pagos', icon: <PaymentIcon />, path: '/student/payments' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/student/profile' },
     ],
     teacher: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/teacher/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/teacher/classes' },
         { label: 'Mis Alumnos', icon: <PeopleIcon />, path: '/teacher/students' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/teacher/profile' },
     ],
     admin: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
@@ -44,6 +48,7 @@ const navItems = {
         { label: 'Clases', icon: <ClassIcon />, path: '/admin/classes' },
         { label: 'Usuarios', icon: <PeopleIcon />, path: '/admin/users' },
         { label: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' },
+        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/admin/profile' },
     ],
 }
 
@@ -59,6 +64,11 @@ export default function AppShell({ children }: Props) {
 
     const role = profile?.role ?? 'student'
     const items = navItems[role as keyof typeof navItems] ?? navItems.student
+
+    const handleNav = (path: string) => {
+        setMobileOpen(false)
+        navigate(path)
+    }
 
     const handleSignOut = async () => {
         await signOut()
@@ -92,9 +102,7 @@ export default function AppShell({ children }: Props) {
                     return (
                         <ListItemButton
                             key={item.path}
-                            component={Link}
-                            to={item.path}
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => handleNav(item.path)}
                             sx={{
                                 borderRadius: 2,
                                 mb: 0.5,
@@ -236,8 +244,8 @@ export default function AppShell({ children }: Props) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 2, md: 4 },
-                    pt: { xs: 10, md: 4 },
+                    p: { xs: 1.5, sm: 2, md: 4 },
+                    pt: { xs: 9, md: 4 },
                     minHeight: '100vh',
                     background: '#06060f',
                     overflow: 'auto',

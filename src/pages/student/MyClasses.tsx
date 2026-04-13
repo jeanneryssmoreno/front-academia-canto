@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
     Box,
     Card,
@@ -7,12 +8,19 @@ import {
     Skeleton,
     Grid,
     Link as MuiLink,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from '@mui/material'
 import ClassIcon from '@mui/icons-material/Class'
 import VideoCallIcon from '@mui/icons-material/VideoCall'
 import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../../context/AuthContext'
 import { useStudentClasses } from '../../hooks/useClasses'
+import { useDeleteEnrollment } from '../../hooks/useEnrollments'
+import { useSnackbar } from '../../context/SnackbarContext'
 
 const statusConfig = {
     scheduled: { label: 'Programada', bg: 'rgba(139,92,246,0.15)', color: '#a78bfa', border: 'rgba(139,92,246,0.25)' },
@@ -23,6 +31,20 @@ const statusConfig = {
 export default function StudentClasses() {
     const { profile } = useAuth()
     const { data: enrollments, isLoading } = useStudentClasses(profile?.id)
+    const deleteEnrollment = useDeleteEnrollment()
+    const { showSnackbar } = useSnackbar()
+    const [unenrollId, setUnenrollId] = useState<{ enrollmentId: string; name: string } | null>(null)
+
+    const handleUnenroll = async () => {
+        if (!unenrollId || !profile?.id) return
+        try {
+            await deleteEnrollment.mutateAsync({ enrollmentId: unenrollId.enrollmentId, studentId: profile.id })
+            showSnackbar('Te has desinscrito de la clase')
+            setUnenrollId(null)
+        } catch {
+            showSnackbar('Error al desinscribirte', 'error')
+        }
+    }
 
     const formatDate = (iso: string) =>
         new Date(iso).toLocaleDateString('es-ES', {
@@ -42,11 +64,11 @@ export default function StudentClasses() {
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>
                     Mis Clases
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Todas tus clases inscritas — pasadas, presentes y futuras.
                 </Typography>
             </Box>
@@ -175,6 +197,11 @@ export default function StudentClasses() {
                                         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.5 }}>
                                             Inscrito el {new Date(e.enrolled_at).toLocaleDateString('es-ES')}
                                         </Typography>
+
+                                        <Button size="small" color="error" sx={{ mt: 1, fontSize: '0.75rem' }}
+                                            onClick={() => setUnenrollId({ enrollmentId: e.id, name: cls?.courses?.name ?? 'Clase' })}>
+                                            Desinscribirme
+                                        </Button>
                                     </CardContent>
                                 </Card>
                             </Grid>
@@ -182,6 +209,19 @@ export default function StudentClasses() {
                     })}
                 </Grid>
             )}
+
+            {/* Unenroll Confirm */}
+            <Dialog open={!!unenrollId} onClose={() => setUnenrollId(null)} maxWidth="xs" fullWidth
+                PaperProps={{ sx: { background: '#0d0d24', border: '1px solid rgba(244,63,94,0.2)' } }}>
+                <DialogTitle>¿Desinscribirte de {unenrollId?.name}?</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body2" color="text.secondary">Perderás acceso a esta clase. Podrás volver a inscribirte desde el catálogo.</Typography>
+                </DialogContent>
+                <DialogActions sx={{ p: 2.5, pt: 0 }}>
+                    <Button onClick={() => setUnenrollId(null)} sx={{ color: 'text.secondary' }}>Cancelar</Button>
+                    <Button variant="contained" color="error" onClick={handleUnenroll} disabled={deleteEnrollment.isPending}>Desinscribirme</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     )
 }

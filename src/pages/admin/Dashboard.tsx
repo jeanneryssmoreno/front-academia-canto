@@ -34,19 +34,19 @@ export default function AdminDashboard() {
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>Panel de Administración</Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>Panel de Administración</Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Resumen global de la academia.
                 </Typography>
             </Box>
 
             {/* Stats grid */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
+            <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: { xs: 2, md: 4 } }}>
                 {stats.map((s) => (
                     <Grid size={{ xs: 12, sm: 6, md: 4 }} key={s.label}>
                         <Card>
-                            <CardContent sx={{ p: 3 }}>
+                            <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
                                     <Box sx={{ width: 40, height: 40, borderRadius: 2, background: `${s.color}20`, border: `1px solid ${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.color }}>
                                         {s.icon}

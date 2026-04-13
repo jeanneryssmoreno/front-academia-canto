@@ -1,9 +1,12 @@
+import { useState } from 'react'
 import {
     Box, Card, CardContent, Typography, Chip, Skeleton,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar,
+    Dialog, DialogTitle, DialogContent, DialogActions, Button, MenuItem, TextField,
 } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People'
-import { useProfiles } from '../../hooks/useProfiles'
+import { useProfiles, useUpdateRole } from '../../hooks/useProfiles'
+import { useSnackbar } from '../../context/SnackbarContext'
 
 const roleConfig = {
     student: { label: 'Estudiante', bg: 'rgba(139,92,246,0.15)', color: '#a78bfa' },
@@ -13,12 +16,33 @@ const roleConfig = {
 
 export default function AdminUsers() {
     const { data: profiles, isLoading } = useProfiles()
+    const updateRole = useUpdateRole()
+    const { showSnackbar } = useSnackbar()
+
+    const [roleDialog, setRoleDialog] = useState<{ id: string; name: string; currentRole: string } | null>(null)
+    const [newRole, setNewRole] = useState('')
+
+    const openRoleDialog = (user: any) => {
+        setRoleDialog({ id: user.id, name: user.full_name, currentRole: user.role })
+        setNewRole(user.role)
+    }
+
+    const handleRoleChange = async () => {
+        if (!roleDialog || newRole === roleDialog.currentRole) return
+        try {
+            await updateRole.mutateAsync({ id: roleDialog.id, role: newRole })
+            showSnackbar(`Rol de ${roleDialog.name} cambiado a ${roleConfig[newRole as keyof typeof roleConfig]?.label ?? newRole}`)
+            setRoleDialog(null)
+        } catch {
+            showSnackbar('Error al cambiar el rol', 'error')
+        }
+    }
 
     return (
         <Box>
-            <Box sx={{ mb: 4 }}>
-                <Typography variant="h4" fontWeight={700}>Usuarios</Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>
+            <Box sx={{ mb: { xs: 2, md: 4 } }}>
+                <Typography variant="h4" fontWeight={700} sx={{ fontSize: { xs: '1.4rem', sm: '1.8rem', md: '2.125rem' } }}>Usuarios</Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, fontSize: { xs: '0.85rem', sm: '1rem' } }}>
                     Todos los perfiles registrados en la academia.
                 </Typography>
             </Box>
@@ -42,8 +66,8 @@ export default function AdminUsers() {
                             <Typography variant="body2">No hay usuarios registrados.</Typography>
                         </Box>
                     ) : (
-                        <TableContainer>
-                            <Table>
+                        <TableContainer sx={{ overflowX: 'auto' }}>
+                            <Table sx={{ minWidth: 500 }}>
                                 <TableHead>
                                     <TableRow>
                                         <TableCell>Usuario</TableCell>
@@ -70,7 +94,8 @@ export default function AdminUsers() {
                                                     <Typography variant="body2" color="text.secondary">{p.email}</Typography>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Chip label={cfg.label} size="small" sx={{ background: cfg.bg, color: cfg.color, fontSize: '0.72rem', fontWeight: 600 }} />
+                                                    <Chip label={cfg.label} size="small" sx={{ background: cfg.bg, color: cfg.color, fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer' }}
+                                                        onClick={() => openRoleDialog(p)} />
                                                 </TableCell>
                                                 <TableCell>
                                                     <Typography variant="body2" color="text.secondary">
@@ -86,6 +111,28 @@ export default function AdminUsers() {
                     )}
                 </CardContent>
             </Card>
+
+            {/* Role Change Dialog */}
+            <Dialog open={!!roleDialog} onClose={() => setRoleDialog(null)} maxWidth="xs" fullWidth
+                PaperProps={{ sx: { background: '#0d0d24', border: '1px solid rgba(139,92,246,0.15)' } }}>
+                <DialogTitle>Cambiar rol de {roleDialog?.name}</DialogTitle>
+                <DialogContent>
+                    <TextField label="Nuevo rol" select fullWidth value={newRole} sx={{ mt: 1 }}
+                        onChange={e => setNewRole(e.target.value)}>
+                        <MenuItem value="student">Estudiante</MenuItem>
+                        <MenuItem value="teacher">Profesor</MenuItem>
+                        <MenuItem value="admin">Admin</MenuItem>
+                    </TextField>
+                </DialogContent>
+                <DialogActions sx={{ p: 2.5, pt: 1 }}>
+                    <Button onClick={() => setRoleDialog(null)} sx={{ color: 'text.secondary' }}>Cancelar</Button>
+                    <Button variant="contained" onClick={handleRoleChange}
+                        disabled={updateRole.isPending || newRole === roleDialog?.currentRole}
+                        sx={{ background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)' }}>
+                        Cambiar rol
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     )
 }
