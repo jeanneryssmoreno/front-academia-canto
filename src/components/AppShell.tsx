@@ -23,7 +23,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
-import ExploreIcon from '@mui/icons-material/Explore'
 import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../context/AuthContext'
 
@@ -191,7 +190,7 @@ export default function AppShell({ children }: Props) {
                     background: 'rgba(6,6,15,0.9)',
                     backdropFilter: 'blur(12px)',
                     borderBottom: '1px solid rgba(139,92,246,0.1)',
-                    zIndex: (t) => t.zIndex.drawer + 1,
+                    zIndex: 1201,
                 }}
             >
                 <Toolbar>

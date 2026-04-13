@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { Box, CircularProgress, Typography } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import AppShell from './AppShell'
 
 interface Props {
