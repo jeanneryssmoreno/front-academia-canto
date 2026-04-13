@@ -28,7 +28,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .select('*')
             .eq('id', userId)
             .single()
-        setProfile(data)
+        // Only update if we got data — never null the profile on a failed fetch
+        if (data) setProfile(data)
     }
 
     useEffect(() => {
@@ -46,9 +47,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             if (event === 'SIGNED_OUT') {
                 setUser(null)
                 setProfile(null)
-            } else if (session?.user) {
+            } else if (event === 'SIGNED_IN' && session?.user) {
+                // Only fetch profile on explicit sign-in, not on TOKEN_REFRESHED
                 setUser(session.user)
                 fetchProfile(session.user.id)
+            } else if (session?.user) {
+                // TOKEN_REFRESHED etc — update user ref but don't re-fetch profile
+                setUser(session.user)
             }
         })
 

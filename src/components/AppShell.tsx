@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
     Box,
     Drawer,
@@ -33,7 +33,6 @@ const navItems = {
     student: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/student/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/student/classes' },
-        { label: 'Explorar', icon: <ExploreIcon />, path: '/student/catalog' },
         { label: 'Mis Pagos', icon: <PaymentIcon />, path: '/student/payments' },
         { label: 'Mi Perfil', icon: <PersonIcon />, path: '/student/profile' },
     ],
@@ -65,6 +64,11 @@ export default function AppShell({ children }: Props) {
 
     const role = profile?.role ?? 'student'
     const items = navItems[role as keyof typeof navItems] ?? navItems.student
+
+    const handleNav = (path: string) => {
+        setMobileOpen(false)
+        navigate(path)
+    }
 
     const handleSignOut = async () => {
         await signOut()
@@ -98,9 +102,7 @@ export default function AppShell({ children }: Props) {
                     return (
                         <ListItemButton
                             key={item.path}
-                            component={Link}
-                            to={item.path}
-                            onClick={() => setMobileOpen(false)}
+                            onClick={() => handleNav(item.path)}
                             sx={{
                                 borderRadius: 2,
                                 mb: 0.5,

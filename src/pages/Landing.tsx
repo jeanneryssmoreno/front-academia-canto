@@ -442,7 +442,7 @@ export default function Landing() {
                             </Typography>
                         </Box>
                         <Typography variant="body2" color="text.secondary">
-                            © 2026 Resonance Vocal Academy. All rights reserved.
+                            © 2026 Resonance Vocal Academy. All rights reserved JEANNERYS MORENO.
                         </Typography>
                     </Container>
                 </Box>
