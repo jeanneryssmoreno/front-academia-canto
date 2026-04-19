@@ -24,6 +24,7 @@ export default function Register() {
     const navigate = useNavigate()
     const [fullName, setFullName] = useState('')
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [role, setRole] = useState<'student' | 'teacher'>('student')
     const [error, setError] = useState('')
@@ -38,7 +39,7 @@ export default function Register() {
             return
         }
         setLoading(true)
-        const { error: err, needsConfirmation } = await signUp(email, password, fullName, role)
+        const { error: err, needsConfirmation } = await signUp(email, password, fullName, role, phone)
         setLoading(false)
         if (err) {
             setError(err)
@@ -167,6 +168,16 @@ export default function Register() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 autoComplete="email"
+                            />
+                            <TextField
+                                label="Teléfono (opcional)"
+                                type="tel"
+                                fullWidth
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                autoComplete="tel"
+                                placeholder="+1 234 567 8900"
+                                helperText="Incluye código de país"
                             />
                             <TextField
                                 label="Contraseña"
