@@ -9,6 +9,10 @@ export interface Profile {
     role: UserRole
     avatar_url: string | null
     created_at: string
+    // Nuevos campos
+    phone?: string | null
+    is_active?: boolean
+    updated_at?: string | null
 }
 
 export interface Course {
@@ -64,6 +68,9 @@ export interface TeacherMetadata {
     bio: string | null
     specialty: string | null
     hourly_rate: number | null
+    // Nuevos campos
+    is_verified?: boolean
+    updated_at?: string | null
 }
 
 export interface TeacherWithMeta extends Profile {
