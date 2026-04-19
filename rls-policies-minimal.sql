@@ -1,8 +1,3 @@
--- ============================================
--- RLS POLICIES MÍNIMAS - Para Producción
--- ============================================
--- Solo lo ESENCIAL para que funcione
--- ============================================
 
 -- PROFILES: Ver y editar propio perfil
 DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
