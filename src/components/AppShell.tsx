@@ -33,7 +33,6 @@ const navItems = {
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/student/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/student/classes' },
         { label: 'Mis Pagos', icon: <PaymentIcon />, path: '/student/payments' },
-        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/student/profile' },
     ],
     teacher: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/teacher/dashboard' },

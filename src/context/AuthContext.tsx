@@ -23,13 +23,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true)
 
     const fetchProfile = async (userId: string) => {
-        const { data } = await supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', userId)
-            .single()
-        // Only update if we got data — never null the profile on a failed fetch
-        if (data) setProfile(data)
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', userId)
+                .single()
+            if (data) setProfile(data)
+            if (error) console.error('Failed to fetch profile:', error)
+        } catch (err) {
+            console.error('Profile fetch error:', err)
+        }
     }
 
     useEffect(() => {

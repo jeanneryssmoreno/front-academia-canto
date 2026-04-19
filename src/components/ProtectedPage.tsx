@@ -35,7 +35,7 @@ export default function ProtectedPage({ children, roles }: Props) {
         return <AppShell>{children}</AppShell>
     }
 
-    // No profile yet — still loading, or brief auth flicker
+    // Still waiting for auth to settle
     if (loading || user || hadProfile.current || hasSupabaseSession()) {
         return Spinner
     }
