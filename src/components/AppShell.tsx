@@ -23,7 +23,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
-import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../context/AuthContext'
 
 const DRAWER_WIDTH = 240
