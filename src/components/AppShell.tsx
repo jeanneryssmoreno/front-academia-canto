@@ -23,7 +23,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MenuIcon from '@mui/icons-material/Menu'
 import GraphicEqIcon from '@mui/icons-material/GraphicEq'
-import PersonIcon from '@mui/icons-material/Person'
 import { useAuth } from '../context/AuthContext'
 
 const DRAWER_WIDTH = 240
@@ -33,13 +32,11 @@ const navItems = {
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/student/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/student/classes' },
         { label: 'Mis Pagos', icon: <PaymentIcon />, path: '/student/payments' },
-        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/student/profile' },
     ],
     teacher: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/teacher/dashboard' },
         { label: 'Mis Clases', icon: <ClassIcon />, path: '/teacher/classes' },
         { label: 'Mis Alumnos', icon: <PeopleIcon />, path: '/teacher/students' },
-        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/teacher/profile' },
     ],
     admin: [
         { label: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
@@ -47,7 +44,6 @@ const navItems = {
         { label: 'Clases', icon: <ClassIcon />, path: '/admin/classes' },
         { label: 'Usuarios', icon: <PeopleIcon />, path: '/admin/users' },
         { label: 'Pagos', icon: <PaymentIcon />, path: '/admin/payments' },
-        { label: 'Mi Perfil', icon: <PersonIcon />, path: '/admin/profile' },
     ],
 }
 

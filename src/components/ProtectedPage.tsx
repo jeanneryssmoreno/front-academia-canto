@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Box, CircularProgress } from '@mui/material'
@@ -9,37 +8,31 @@ interface Props {
     roles: string[]
 }
 
-function hasSupabaseSession(): boolean {
-    return Object.keys(localStorage).some(k => k.startsWith('sb-') && k.endsWith('-auth-token'))
-}
-
-const Spinner = (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
-        <CircularProgress color="primary" />
-    </Box>
-)
-
 export default function ProtectedPage({ children, roles }: Props) {
-    const { user, profile, loading } = useAuth()
-    const hadProfile = useRef(false)
+    const { profile, loading } = useAuth()
 
-    if (profile) hadProfile.current = true
-
-    // PROFILE-FIRST: if profile exists, trust it immediately
-    if (profile) {
-        if (!roles.includes(profile.role)) {
-            if (profile.role === 'teacher') return <Navigate to="/teacher/dashboard" replace />
-            if (profile.role === 'admin') return <Navigate to="/admin/dashboard" replace />
-            return <Navigate to="/student/dashboard" replace />
-        }
-        return <AppShell>{children}</AppShell>
+    // Show loading spinner while auth is initializing
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                <CircularProgress color="primary" />
+            </Box>
+        )
     }
 
-    // No profile yet — still loading, or brief auth flicker
-    if (loading || user || hadProfile.current || hasSupabaseSession()) {
-        return Spinner
+    // No profile = not authenticated
+    if (!profile) {
+        return <Navigate to="/login" replace />
     }
 
-    // Truly unauthenticated
-    return <Navigate to="/login" replace />
+    // Check if user has correct role
+    if (!roles.includes(profile.role)) {
+        // Redirect to appropriate dashboard
+        if (profile.role === 'teacher') return <Navigate to="/teacher/dashboard" replace />
+        if (profile.role === 'admin') return <Navigate to="/admin/dashboard" replace />
+        return <Navigate to="/student/dashboard" replace />
+    }
+
+    // All checks passed, render the page
+    return <AppShell>{children}</AppShell>
 }

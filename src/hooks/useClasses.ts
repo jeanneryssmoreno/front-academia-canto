@@ -56,7 +56,10 @@ export function useCreateClass() {
             if (error) throw error
             return data
         },
-        onSuccess: () => qc.invalidateQueries({ queryKey: ['classes'] }),
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: ['classes'] })
+            qc.invalidateQueries({ queryKey: ['teacher-classes'] })
+        },
     })
 }
 

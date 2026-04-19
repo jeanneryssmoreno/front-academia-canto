@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { Box, CircularProgress } from '@mui/material'
 import AppShell from './AppShell'
@@ -21,18 +21,6 @@ const Spinner = (
 export default function ProtectedLayout({ roles }: Props) {
     const { user, profile, loading } = useAuth()
     const hadProfile = useRef(false)
-    const location = useLocation()
-
-    // DEBUG — visible en pantalla
-    console.log('[ProtectedLayout]', {
-        path: location.pathname,
-        loading,
-        user: !!user,
-        profile: profile?.role ?? null,
-        hadProfile: hadProfile.current,
-        hasSession: hasSupabaseSession(),
-        roles,
-    })
 
     // Once profile is loaded, remember it forever (layout routes don't remount)
     if (profile) hadProfile.current = true
@@ -40,7 +28,6 @@ export default function ProtectedLayout({ roles }: Props) {
     // PROFILE-FIRST: if profile exists, trust it immediately (skip loading check)
     if (profile) {
         if (!roles.includes(profile.role)) {
-            console.log('[ProtectedLayout] ROLE MISMATCH → redirect')
             if (profile.role === 'teacher') return <Navigate to="/teacher/dashboard" replace />
             if (profile.role === 'admin') return <Navigate to="/admin/dashboard" replace />
             return <Navigate to="/student/dashboard" replace />
@@ -54,11 +41,9 @@ export default function ProtectedLayout({ roles }: Props) {
 
     // No profile yet — still loading, or brief auth flicker
     if (loading || user || hadProfile.current || hasSupabaseSession()) {
-        console.log('[ProtectedLayout] WAITING (spinner)')
         return Spinner
     }
 
     // No profile, no user, no session, never had profile → truly unauthenticated
-    console.log('[ProtectedLayout] NO AUTH → redirect /login')
     return <Navigate to="/login" replace />
 }
